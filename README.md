@@ -63,8 +63,20 @@ every 24 hours, both MCP servers start answering with `invalid_rapt`, `invalid_g
 (it opens a browser — this is a step only you can do) and then `/mcp` in Claude Code.
 This is expected, not a bug. Full explanation: `docs/03-auth-and-rapt.md`.
 
+## Rules for AI agents
+
+`AGENTS.md` states what an agent may and may not do in a working hub: never publish or
+transmit anything from the folder without the human naming what and where, never read or
+move credentials, never try to complete the browser login itself, and keep each client's
+data in its own folder. The hub's `CLAUDE.md` points Claude at it on every session.
+
+Those rules matter more here than in most repositories, because a hub holds live credentials
+to real Analytics and Search Console accounts alongside data belonging to clients who never
+agreed to have it published. Keep sections 1 to 3 if you adapt the file.
+
 ## Documentation
 
+- `AGENTS.md` — binding rules for AI agents operating in a hub.
 - `docs/01-google-cloud-setup.md` — creating the Google Cloud project, APIs, OAuth client.
 - `docs/02-mcp-servers.md` — installing and configuring both MCP servers.
 - `docs/03-auth-and-rapt.md` — shared ADC, the three scopes, RAPT, multi-account setups.

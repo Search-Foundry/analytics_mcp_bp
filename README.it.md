@@ -62,8 +62,20 @@ gcloud impone lo scope `cloud-platform`, che attiva la policy RAPT di Google: ci
 (apre un browser — un passo che solo tu puoi fare) e poi `/mcp` in Claude Code. È un
 comportamento atteso, non un bug. Spiegazione completa: `docs/03-auth-and-rapt.md`.
 
+## Regole per gli agenti AI
+
+`AGENTS.md` stabilisce cosa un agente può e non può fare in un hub di lavoro: mai pubblicare
+o trasmettere nulla dalla cartella senza che l'umano abbia indicato cosa e dove, mai leggere
+o spostare credenziali, mai tentare di completare da solo il login via browser, e tenere i
+dati di ogni cliente nella propria cartella. Il `CLAUDE.md` dell'hub ci rimanda a ogni sessione.
+
+Qui contano più che nella maggior parte dei repository, perché un hub contiene credenziali
+vive verso account Analytics e Search Console reali, accanto a dati di clienti che non hanno
+mai acconsentito a vederli pubblicati. Se adatti il file, conserva le sezioni da 1 a 3.
+
 ## Documentazione
 
+- `AGENTS.md` — regole vincolanti per gli agenti AI che operano in un hub.
 - `docs/01-google-cloud-setup.md` — creazione del progetto Google Cloud, API, client OAuth.
 - `docs/02-mcp-servers.md` — installazione e configurazione di entrambi i server MCP.
 - `docs/03-auth-and-rapt.md` — ADC condiviso, i tre scope, RAPT, setup multi-account.

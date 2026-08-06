@@ -5,6 +5,23 @@ for f in README.md README.it.md CLAUDE.md.template; do
   assert_eq "yes" "$([ -f "$REPO_ROOT/$f" ] && echo yes || echo no)" "$f exists"
 done
 
+it "AGENTS.md states the rules that prevent a leak, and the hub template routes agents to it"
+# These rules are the difference between an inconvenience and a published client dataset,
+# so they are pinned rather than left to good intentions. Sections 1-3 are the load-bearing
+# ones: no publishing, no touching credentials, no self-authenticating.
+_agents="$(cat "$REPO_ROOT/AGENTS.md" 2>/dev/null || true)"
+assert_contains "$_agents" "Never publish, upload, or transmit" "rule 1: nothing leaves the hub"
+assert_contains "$_agents" "Never read, print, or move credentials" "rule 2: credentials are off limits"
+assert_contains "$_agents" "Never authenticate on the user's behalf" "rule 3: the browser login is the human's"
+assert_contains "$_agents" ".secrets/" "credentials are named concretely, not gestured at"
+# A rules file nothing loads protects nothing: the hub template must send agents to it.
+assert_contains "$(cat "$REPO_ROOT/CLAUDE.md.template")" "AGENTS.md" "hub template points at AGENTS.md"
+
+it "both READMEs document the agent rules, and stay in step with each other"
+for f in README.md README.it.md; do
+  assert_contains "$(cat "$REPO_ROOT/$f")" "AGENTS.md" "$f mentions AGENTS.md"
+done
+
 it "the account template carries the tenants marker new-tenant.sh needs"
 assert_contains "$(cat "$REPO_ROOT/templates/account/CLAUDE.md")" "<!-- tenants -->" "marker present"
 
