@@ -18,7 +18,7 @@ backend.
 - A Google Cloud project you control, to host an OAuth client and enable three APIs.
 - [Node.js 22+](https://nodejs.org) and [gcloud](https://cloud.google.com/sdk/docs/install).
 - [Python 3](https://www.python.org/) with [pipx](https://pipx.pypa.io/), to install the
-  GA4 MCP server: `pipx install analytics-mcp`. `setup.sh` checks for it and stops with
+  GA4 MCP server: `pipx install analytics-mcp==0.7.0`. `setup.sh` checks for it and stops with
   this exact command if it's missing — see `docs/02-mcp-servers.md`.
 
 ## Quickstart
@@ -26,6 +26,7 @@ backend.
 ```
 git clone https://github.com/<you>/analytics-mcp-blueprint.git my-hub
 cd my-hub
+rm -rf .git && git init
 cp CLAUDE.md.template CLAUDE.md
 ./scripts/setup.sh
 # paste the printed MCP config block into ~/.claude.json, then in Claude Code: /mcp
@@ -35,6 +36,16 @@ cp CLAUDE.md.template CLAUDE.md
 `setup.sh` walks you through the rest interactively: checking prerequisites, creating
 `.env`, enabling the Google Cloud APIs, generating credentials, and printing the MCP
 config block to paste into `~/.claude.json`.
+
+### Make it yours
+
+This clone becomes your working hub — the folder where client data will live. `rm -rf
+.git && git init` above detaches it from the blueprint's own repository, so an
+absent-minded `git push` later can't publish client work there; removing the `origin`
+remote (`git remote remove origin`) does the same job if you'd rather keep the history.
+Using git for the hub at all is optional — the filesystem is the primary channel this is
+designed around, see `docs/04-multi-tenant.md` — but if you do keep it in git, the
+repository must be private.
 
 ## The `accounts/<email>/<tenant>/` hierarchy
 

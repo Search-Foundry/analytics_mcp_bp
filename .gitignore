@@ -21,3 +21,6 @@ gsc-mcp/
 node_modules/
 
 .DS_Store
+
+# Working notes / internal reports, not part of the published blueprint
+.superpowers/

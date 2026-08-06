@@ -25,3 +25,6 @@ this folder. Keep it short and factual: it is read on every session.
 - `data/` - raw exports, gitignored
 - `exports/` - generated CSV/reports, gitignored
 - `analysis/` - written findings, committed
+
+Never put credentials in this folder — they live only at the hub root under `.secrets/`
+or in gcloud's own config directory. This folder should be safe to zip and send.

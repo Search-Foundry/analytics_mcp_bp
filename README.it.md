@@ -24,6 +24,7 @@ parla con un backend condiviso.
 ```
 git clone https://github.com/<tu>/analytics-mcp-blueprint.git my-hub
 cd my-hub
+rm -rf .git && git init
 cp CLAUDE.md.template CLAUDE.md
 ./scripts/setup.sh
 # incolla il blocco di configurazione MCP stampato in ~/.claude.json, poi in Claude Code: /mcp
@@ -33,6 +34,16 @@ cp CLAUDE.md.template CLAUDE.md
 `setup.sh` guida interattivamente il resto: verifica dei prerequisiti, creazione di
 `.env`, abilitazione delle API Google Cloud, generazione delle credenziali, e stampa del
 blocco di configurazione MCP da incollare in `~/.claude.json`.
+
+### Rendilo tuo
+
+Questo clone diventa il tuo hub di lavoro — la cartella dove vivranno i dati dei
+clienti. `rm -rf .git && git init` sopra lo scollega dal repository del blueprint,
+così un `git push` distratto in seguito non può pubblicare lavoro dei clienti lì;
+rimuovere il remote `origin` (`git remote remove origin`) ottiene lo stesso risultato se
+preferisci mantenere la storia. Usare git per l'hub è comunque facoltativo — il
+filesystem è il canale primario per cui questo è pensato, vedi
+`docs/04-multi-tenant.md` — ma se lo tieni in git, la repository deve essere privata.
 
 ## La gerarchia `accounts/<email>/<tenant>/`
 

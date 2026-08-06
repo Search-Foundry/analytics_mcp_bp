@@ -49,6 +49,42 @@ assert_exit 0 git -C "$_tmp_gi" check-ignore -q accounts/me@example.com/acme/dat
 assert_exit 0 git -C "$_tmp_gi" check-ignore -q accounts/me@example.com/acme/exports/report.csv
 rm -rf "$_tmp_gi"
 
+it "both READMEs tell you to detach the clone from the blueprint before adding client data (fix 1)"
+assert_contains "$(cat "$REPO_ROOT/README.md")" "rm -rf .git && git init" "README.md documents detaching git"
+assert_contains "$(cat "$REPO_ROOT/README.md")" "private" "README.md says the repo must be private if kept in git"
+assert_contains "$(cat "$REPO_ROOT/README.it.md")" "rm -rf .git && git init" "README.it.md documents detaching git"
+assert_contains "$(cat "$REPO_ROOT/README.it.md")" "privata" "README.it.md says the repo must be private if kept in git"
+
+it "docs/04-multi-tenant.md explains detaching, the filesystem channel and the credentials rule (fixes 1-3)"
+_mt="$(cat "$REPO_ROOT/docs/04-multi-tenant.md")"
+assert_contains "$_mt" "rm -rf .git && git init" "detach instructions present"
+assert_contains "$_mt" "zip" "filesystem-as-channel section present"
+assert_contains "$_mt" "Credentials never live in a tenant or account folder" "credentials rule stated"
+
+it "docs/03-auth-and-rapt.md states the credentials-never-in-tenant rule (fix 3)"
+assert_contains "$(cat "$REPO_ROOT/docs/03-auth-and-rapt.md")" "Credentials never live in a tenant or account folder" "rule present"
+
+it "both tenant and account templates carry a one-line credentials reminder (fix 3)"
+assert_contains "$(cat "$REPO_ROOT/templates/tenant/CLAUDE.md")" "Never put credentials in this folder" "tenant template reminder"
+assert_contains "$(cat "$REPO_ROOT/templates/account/CLAUDE.md")" "Never put credentials in this folder" "account template reminder"
+
+it "accounts/, the root CLAUDE.md and analysis/ are not gitignored (owner decision)"
+_gi="$(cat "$REPO_ROOT/.gitignore")"
+for _pattern in '^accounts/$' '^/CLAUDE\.md$' '^\*\*/analysis/$'; do
+  assert_eq "" "$(printf '%s\n' "$_gi" | grep -E "$_pattern" || true)" "gitignore has no rule matching $_pattern"
+done
+
+it "MCP server versions are pinned everywhere they're invoked or documented (fix 4)"
+assert_contains "$(cat "$REPO_ROOT/README.md")" "analytics-mcp==0.7.0" "README pins analytics-mcp"
+assert_contains "$(cat "$REPO_ROOT/docs/01-google-cloud-setup.md")" "analytics-mcp==0.7.0" "01 pins analytics-mcp"
+assert_contains "$(cat "$REPO_ROOT/docs/02-mcp-servers.md")" "analytics-mcp==0.7.0" "02 pins analytics-mcp"
+assert_contains "$(cat "$REPO_ROOT/docs/02-mcp-servers.md")" "search-console-mcp@2.0.1" "02 pins search-console-mcp"
+assert_contains "$(cat "$REPO_ROOT/docs/99-troubleshooting.md")" "analytics-mcp==0.7.0" "99 pins analytics-mcp"
+assert_contains "$(cat "$REPO_ROOT/scripts/setup.sh")" "search-console-mcp@2.0.1" "setup.sh pins search-console-mcp in emitted config"
+assert_contains "$(cat "$REPO_ROOT/scripts/setup.sh")" "analytics-mcp==0.7.0" "setup.sh pins analytics-mcp in the prereq error"
+assert_contains "$(cat "$REPO_ROOT/scripts/lib/checks.sh")" "search-console-mcp@2.0.1" "checks.sh pins search-console-mcp"
+assert_contains "$(cat "$REPO_ROOT/scripts/lib/checks.sh")" "analytics-mcp==0.7.0" "checks.sh pins analytics-mcp"
+
 it "the account and tenant templates are not swallowed by the data/exports ignore (C2 regression guard)"
 # templates/tenant/data and templates/tenant/exports ship a tracked .gitkeep; the widened
 # pattern must not retroactively make the templates directory itself look untracked.

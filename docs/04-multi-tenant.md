@@ -1,5 +1,28 @@
 # 4. Multi-tenant layout
 
+## Make it yours: detach from the blueprint
+
+The moment you clone this repo to start a real hub, the clone's `origin` remote still
+points at the blueprint's own public repository. If you start putting client data into
+that clone and later run a plain `git push` out of habit, you publish client work to the
+blueprint's repository, not your own. Before any client data goes in, detach it:
+
+```
+rm -rf .git && git init
+```
+
+or, if you'd rather keep the local history:
+
+```
+git remote remove origin
+```
+
+Using git for the hub at all is optional — see "The filesystem is the primary channel"
+below, this hub is designed to work fine without it. But if you do keep the hub under
+git, treat that as a decision with a consequence: the repository must be private. Nothing
+in `accounts/` is gitignored (see below), so a public repository at this point means
+public client data.
+
 ## The hierarchy
 
 Tenants live at:
@@ -64,6 +87,50 @@ are gitignored too: raw GA4/GSC exports and generated reports are working artifa
 regenerate on demand, not something you want tracked and diffed in git. `analysis/` is the
 one tenant subfolder meant to be committed — it's where written findings and conclusions
 live, which is exactly the kind of content worth keeping in version history.
+
+`accounts/` itself, the root `CLAUDE.md`, and `analysis/` are deliberately **not**
+gitignored. That's not an oversight: see "The filesystem is the primary channel" below for
+why, and "Credentials never live in a tenant or account folder" for the one thing that
+must never end up in them regardless.
+
+## The filesystem is the primary channel
+
+Most people using this blueprint never push it anywhere — they clone it, adapt it, and
+run it locally. For them, git is tooling, not the safety mechanism for client data: the
+real way a tenant's work moves around is the filesystem itself. Someone zips
+`accounts/me@example.com/acme/` and emails it to a colleague; a company backup job picks
+up the whole hub directory on its normal schedule; a laptop gets replaced and the folder
+is copied over wholesale. None of that touches git.
+
+This works because a tenant folder is self-contained. Everything needed to make sense of
+`accounts/<email>/<tenant>/` on its own — away from the hub, on someone else's machine —
+lives inside it:
+
+- **`CLAUDE.md`** — the tenant's identity (Google account, GA4 property ID, GSC site),
+  what the business is, and known quirks that would make an analyst misread the numbers.
+  This is what lets the folder stand alone: open it in Claude Code by itself and the
+  context is still there.
+- **`data/`** — raw GA4/GSC exports, regenerated on demand, gitignored.
+- **`exports/`** — generated CSV/reports, regenerated on demand, gitignored.
+- **`analysis/`** — written findings and conclusions, the one subfolder meant to be
+  committed if you keep the hub in git at all.
+
+Before zipping or handing off a tenant folder, check two things: that no credential file
+has been dropped into it for convenience (see the rule below — it should never happen,
+but a folder about to leave your machine is exactly when it's worth a second look), and
+that `data/`/`exports/` don't contain anything you didn't mean to share (they're
+gitignored, not access-controlled — gitignore doesn't stop a zip from including them).
+
+## Credentials never live in a tenant or account folder
+
+This is already true by construction — `reconnect.sh` writes ADC either to gcloud's
+default location or under `.secrets/gcloud/<email>/` at the hub root (see
+`03-auth-and-rapt.md`) — but it's worth stating as a rule, because a tenant folder about
+to be zipped and handed to a colleague is exactly the situation where someone is tempted
+to drop a credential JSON next to the data "for convenience." Don't. Credentials live only
+at the hub root under `.secrets/`, or in gcloud's own config directory — never inside
+`accounts/<email>/<tenant>/` or `accounts/<email>/`. A tenant folder must be safe to zip
+and send without a second thought about what's mixed in with it.
 
 ## See also
 

@@ -32,3 +32,6 @@ Either way, after renewing, run `/mcp` in Claude Code to reconnect the servers. 
 MCP servers take a fixed environment, an account only needs its own separate server
 entries in `~/.claude.json` (the `--account`-suffixed ones) once it's on the multi-account
 path — see `docs/03-auth-and-rapt.md`.
+
+Never put credentials in this folder or in any tenant under it — they live only at the
+hub root under `.secrets/` or in gcloud's own config directory.

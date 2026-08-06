@@ -29,6 +29,18 @@ daily re-login as part of normal operation.
 Symptoms when it's expired: the MCP servers start returning `invalid_rapt`,
 `invalid_grant`, a message like "reauthentication needed", or a bare `401`.
 
+## Reducing what the credential can reach
+
+`cloud-platform` is forced by gcloud, not by this project, and there's no way to drop it
+from the login — that's accurate, and it must not be read as optional. What is worth
+doing is limiting the blast radius of a credential that broad: run this hub against a
+Google Cloud project dedicated to it rather than an existing production project, consider
+using a dedicated Google account that holds only Viewer on the specific GA4 properties
+and GSC sites this hub needs (not your own primary account with broader org access), and
+grant no more than the minimum GA4/GSC privileges that still allow reading. In one
+sentence: an ADC with `cloud-platform` is a broad credential, so what it can reach should
+be small. Full guidance: `01-google-cloud-setup.md`.
+
 ## Renewing it: two steps
 
 1. From the repo root, run:
@@ -109,6 +121,15 @@ Without `--account`, `doctor.sh` only ever looks at the default ADC location (or
 If you only ever run `reconnect.sh --account`, always pass the matching `--account` to
 `doctor.sh` too, or its `adc-file`/`adc-scopes` checks will report a false FAIL against a
 file that was never meant to exist at the default path.
+
+## Credentials never live in a tenant or account folder
+
+The ADC file lives at gcloud's default location, or under `.secrets/gcloud/<email>/` at
+the hub root when using `--account` — never inside `accounts/<email>/<tenant>/` or
+`accounts/<email>/`. This matters more than it might seem: tenant folders get zipped and
+handed to colleagues or picked up by backups (see `04-multi-tenant.md`), and a credential
+file dropped in "for convenience" would travel with them. Keep credentials only at the
+hub root under `.secrets/`, or in gcloud's own config directory.
 
 ## One thing not to do
 
