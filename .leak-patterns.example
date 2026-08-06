@@ -1,0 +1,15 @@
+# Copy this file to .leak-patterns (gitignored, never committed) and fill it in with
+# extended-regex patterns matching real identifiers from your own private hub — GA4
+# property IDs, client domains, personal domains, OAuth project numbers, anything that
+# should never show up in docs/ or scripts/ once you publish or share this checkout.
+#
+# One extended-regex pattern per line. Blank lines and lines starting with # are ignored.
+# When tests/test_docs.sh runs and .leak-patterns is absent, the anti-leak check is
+# skipped (visibly) rather than silently passing — this file only matters if you create
+# a real .leak-patterns locally.
+#
+# Example patterns (placeholders only — replace with your own real identifiers):
+123456789
+example-client\.com
+example-personal-domain\.com
+987654321098

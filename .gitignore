@@ -1,0 +1,23 @@
+# Local configuration and secrets — never commit
+.env
+.secrets/
+*application_default_credentials.json
+
+# Local anti-leak patterns for tests/test_docs.sh — real identifiers, never committed
+.leak-patterns
+
+# Tenant data belongs to clients, not to this repo — match at any depth
+# (real paths are accounts/<email>/<tenant>/data/, not just one level down).
+**/data/
+**/exports/
+
+# ...but the tenant template's empty placeholders must ship, or new-tenant.sh
+# would scaffold a tenant with no data/ and exports/ folders at all.
+!templates/tenant/data/
+!templates/tenant/exports/
+
+# Locally built MCP server (troubleshooting fallback only)
+gsc-mcp/
+node_modules/
+
+.DS_Store

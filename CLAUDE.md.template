@@ -1,0 +1,49 @@
+# <your hub name> - Analytics & Search Console hub
+
+This folder is the operational hub from which several SEO/traffic projects are managed,
+through the `analytics-mcp` (GA4) and `search-console-mcp` (Google Search Console) MCP servers.
+
+Work is organised by Google account, because credentials are per account:
+
+```
+accounts/
+  me@example.com/       <- one folder per Google account, with its own CLAUDE.md
+    acme/               <- a tenant, accessed with that account
+    globex/
+```
+
+> Claude loads this file at the start of every session, and the account's own CLAUDE.md
+> when working under it. Keep both current and short.
+
+## Accounts
+
+`new-tenant.sh` maintains this table for you — don't edit it by hand.
+
+| Google account | Tenants | Status |
+|---|---|---|
+<!-- accounts -->
+
+To add a tenant: `./scripts/new-tenant.sh <name> --account <email> --ga4 <id> --gsc <url>`
+It creates the account folder too, if this is that account's first tenant, and adds or
+updates this account's row above.
+
+## Authentication
+
+Both MCP servers read an ADC credentials file, created by OAuth with three scopes.
+Because gcloud forces the `cloud-platform` scope, Google's RAPT policy requires a
+re-login roughly every 24 hours, per account. When a server answers with `invalid_rapt`,
+`invalid_grant`, `reauthentication needed` or `401`:
+
+1. the user runs `./scripts/reconnect.sh --account <email>` (it opens a browser - Claude cannot
+   do this, and must not try)
+2. the user runs `/mcp` in Claude Code to reconnect the servers
+
+While waiting, work on anything that does not need the MCP servers.
+
+Health check: `./scripts/doctor.sh`
+
+## Conventions
+
+- Tenant files live in that tenant's folder, under its account. The hub holds only shared tooling.
+- `.secrets/` and any ADC file are never committed and never pasted into chat.
+- Tool usage notes: `docs/05-usage.md`. Problems: `docs/99-troubleshooting.md`.
