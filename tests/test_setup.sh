@@ -15,6 +15,10 @@ assert_contains "$_cfg" "search-console-mcp" "GSC server declared"
 assert_contains "$_cfg" "analytics-mcp" "GA4 server declared"
 assert_contains "$_cfg" "$_tmp/adc.json" "ADC path comes from .env"
 
+it "the config pins the search-console-mcp version rather than a bare package name (audit fix 4)"
+_gsc_arg1="$(node -e "const c=JSON.parse(require('fs').readFileSync(0,'utf8'));process.stdout.write(c.mcpServers['search-console-mcp'].args[1])" <<< "$_cfg")"
+assert_eq "search-console-mcp@2.0.1" "$_gsc_arg1" "npx arg carries the pinned version spec"
+
 it "--account suffixes the server names and points at that account's ADC"
 _cfg_a="$(ENV_FILE="$_tmp/.env" bash "$REPO_ROOT/scripts/setup.sh" --print-mcp-config --account me@example.com)"
 assert_exit 0 node -e "JSON.parse(require('fs').readFileSync(0,'utf8'))" <<< "$_cfg_a"

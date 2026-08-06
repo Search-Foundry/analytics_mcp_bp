@@ -42,7 +42,7 @@ Python package on PyPI, installed separately from `search-console-mcp` (which ru
 its own isolated environment:
 
 ```
-pipx install analytics-mcp
+pipx install analytics-mcp==0.7.0
 ```
 
 Then re-run `./scripts/setup.sh`. See `02-mcp-servers.md` for the full picture on both
@@ -144,7 +144,7 @@ Remedies, in order:
    ```
 
    `setup.sh --print-mcp-config` and `doctor.sh` both honor `GSC_MCP_MODE=local` and will
-   launch/check the local build instead of `npx -y search-console-mcp`.
+   launch/check the local build instead of `npx -y search-console-mcp@2.0.1`.
 
 ### Historical note: `re2`
 

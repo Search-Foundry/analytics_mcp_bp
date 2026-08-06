@@ -25,7 +25,7 @@ check_gcloud() {
 
 check_analytics_mcp() {
   command -v analytics-mcp >/dev/null 2>&1 || {
-    echo "analytics-mcp is not installed — run: pipx install analytics-mcp"
+    echo "analytics-mcp is not installed — run: pipx install analytics-mcp==0.7.0"
     return 1
   }
   echo "analytics-mcp is on PATH"
@@ -99,7 +99,7 @@ check_gsc_server() {
     if [ "$mode" = "local" ]; then
       GOOGLE_APPLICATION_CREDENTIALS="${ADC_FILE:-}" node "$GSC_MCP_PATH" >"$out_file" 2>&1 &
     else
-      GOOGLE_APPLICATION_CREDENTIALS="${ADC_FILE:-}" npx -y search-console-mcp >"$out_file" 2>&1 &
+      GOOGLE_APPLICATION_CREDENTIALS="${ADC_FILE:-}" npx -y search-console-mcp@2.0.1 >"$out_file" 2>&1 &
     fi
     echo "$!" > "$pid_file"
     wait

@@ -19,6 +19,24 @@ can see too — no separate sharing step per property.
 The trade-off is that this flow is subject to Google's RAPT re-login policy — see
 `03-auth-and-rapt.md`.
 
+## Reducing the blast radius
+
+The ADC this hub generates necessarily carries `cloud-platform` alongside the two
+readonly scopes — gcloud forces it, see `03-auth-and-rapt.md`, and that's not
+optional. What *is* under your control is how much that broad credential can reach:
+
+- **Use a Google Cloud project dedicated to this hub**, not an existing production
+  project — the project below, "1. Create or choose a Google Cloud project", should be
+  one you'd be unbothered losing, not one that also hosts production infrastructure.
+- **Consider a dedicated Google account** for the login in `03-auth-and-rapt.md`,
+  granted only Viewer on the specific GA4 properties and Search Console sites it needs
+  — not your own primary account with broader access across the organization.
+- **Grant the minimum GA4/GSC privileges that still allow reading** — Viewer, not
+  Editor or Owner, on each property and site.
+
+The reasoning in one sentence: an ADC carrying `cloud-platform` is a broad credential by
+construction, so what it can reach should be kept small.
+
 ## 1. Create or choose a Google Cloud project
 
 Any project works, including a free-tier one with no billing enabled — this project only
@@ -87,7 +105,7 @@ Before running setup, install the GA4 MCP server — it's a separate Python pack
 something `setup.sh` installs for you:
 
 ```
-pipx install analytics-mcp
+pipx install analytics-mcp==0.7.0
 ```
 
 See `02-mcp-servers.md` for details on both servers. Then run `./scripts/setup.sh`. It

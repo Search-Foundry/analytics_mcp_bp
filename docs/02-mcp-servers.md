@@ -11,7 +11,7 @@ them directly.
   environment instead of polluting your system Python:
 
 ```
-pipx install analytics-mcp
+pipx install analytics-mcp==0.7.0
 ```
 
 After installing, the `analytics-mcp` command is on your PATH — that's what the MCP
@@ -23,7 +23,7 @@ config block below runs.
 - Run via `npx`, which downloads and caches it on first use — no separate install step:
 
 ```
-npx -y search-console-mcp
+npx -y search-console-mcp@2.0.1
 ```
 
 Version 2 dropped the native `re2` dependency that plagued earlier releases (see
@@ -35,6 +35,24 @@ v2 also exposes an HTTP/SSE transport (`search-console-mcp --transport=sse --por
 for running the server standalone and reachable over the network. This blueprint doesn't
 use it — everything here runs the server as a local stdio subprocess, launched by Claude
 Code itself, which is simpler to set up and doesn't require exposing a port.
+
+## Versions are pinned on purpose
+
+Every install and run command in this repo names an exact version:
+`analytics-mcp==0.7.0` and `search-console-mcp@2.0.1`. That's deliberate, not an
+oversight — `npx -y search-console-mcp` with no version would silently fetch whatever
+is newest at run time, and `search-console-mcp` went from 1.14.x to 2.0.0 as a breaking
+change: v2 replaced roughly 96 individual tools with 7 fluent domain tools, which is
+exactly the tool surface `docs/05-usage.md` documents. An unpinned install could hand
+you a different tool surface than the docs describe, with no warning.
+
+Upgrading is a conscious act, not something that happens on the next `npx` call. To move
+to a newer version: update the version string everywhere it's invoked or documented —
+`scripts/setup.sh` (`print_mcp_config`), `scripts/lib/checks.sh`, this file, and
+`docs/01-google-cloud-setup.md` / `docs/99-troubleshooting.md` for `analytics-mcp` — then
+re-read that version's changelog and re-check `docs/05-usage.md` against it before telling
+anyone to upgrade. A major-version jump (like 1.x to 2.x) can invalidate what that page
+describes.
 
 ## The `~/.claude.json` config block
 
@@ -59,7 +77,7 @@ This prints something like:
     "search-console-mcp": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "search-console-mcp"],
+      "args": ["-y", "search-console-mcp@2.0.1"],
       "env": { "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/application_default_credentials.json" }
     }
   }

@@ -103,7 +103,7 @@ print_mcp_config() {
     const [suffix, adc, gscMode, gscPath] = process.argv.slice(1);
     const gsc = gscMode === "local"
       ? { command: "node", args: [gscPath] }
-      : { command: "npx", args: ["-y", "search-console-mcp"] };
+      : { command: "npx", args: ["-y", "search-console-mcp@2.0.1"] };
     const config = {
       mcpServers: {
         ["analytics-mcp" + suffix]: {
@@ -140,7 +140,7 @@ error: analytics-mcp is not installed.
 The GA4 MCP server is a Python package, installed separately from the Node-based
 search-console-mcp server. Install it with pipx (https://pipx.pypa.io/):
 
-  pipx install analytics-mcp
+  pipx install analytics-mcp==0.7.0
 
 Then re-run setup.sh. See docs/02-mcp-servers.md for details.
 EOF
