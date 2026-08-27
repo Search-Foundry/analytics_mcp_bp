@@ -22,9 +22,7 @@ a loro:
   — [`analytics-mcp`](https://pypi.org/project/analytics-mcp/) su PyPI, pinnato a 0.7.0.
 - **Search Console:** [saurabhsharma2u/search-console-mcp](https://github.com/saurabhsharma2u/search-console-mcp)
   — [`search-console-mcp`](https://www.npmjs.com/package/search-console-mcp) su npm,
-  pinnato a 2.1.1. Da non confondere con
-  [AminForou/mcp-gsc](https://github.com/AminForou/mcp-gsc), un server Python distinto
-  che copre lo stesso ambito con un nome simile.
+  pinnato a 2.1.1.
 
 Le versioni sono pinnate di proposito: `docs/02-mcp-servers.md` spiega perché, e cosa
 comporta aggiornarle.
@@ -36,6 +34,9 @@ comporta aggiornarle.
 - Un progetto Google Cloud sotto il tuo controllo, per ospitare un client OAuth e
   abilitare tre API.
 - [Node.js 22+](https://nodejs.org) e [gcloud](https://cloud.google.com/sdk/docs/install).
+- [Python 3](https://www.python.org/) con [pipx](https://pipx.pypa.io/), per installare il
+  server MCP di GA4: `pipx install analytics-mcp==0.7.0`. `setup.sh` lo verifica e si
+  ferma con questo comando esatto se manca — vedi `docs/02-mcp-servers.md`.
 
 ## Quickstart
 

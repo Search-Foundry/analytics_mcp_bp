@@ -21,9 +21,7 @@ multi-tenant layout, the docs, the playbooks — is glue around them:
   — [`analytics-mcp`](https://pypi.org/project/analytics-mcp/) on PyPI, pinned to 0.7.0.
 - **Search Console:** [saurabhsharma2u/search-console-mcp](https://github.com/saurabhsharma2u/search-console-mcp)
   — [`search-console-mcp`](https://www.npmjs.com/package/search-console-mcp) on npm,
-  pinned to 2.1.1. Not to be confused with
-  [AminForou/mcp-gsc](https://github.com/AminForou/mcp-gsc), a separate Python server
-  covering the same ground under a similar name.
+  pinned to 2.1.1.
 
 Both versions are pinned deliberately; `docs/02-mcp-servers.md` explains why, and what
 upgrading them entails.
