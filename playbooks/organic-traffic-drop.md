@@ -29,19 +29,29 @@ never hardcode real ones in this file.
 
 **1. Brand vs non-brand split, current vs prior period**, in GSC:
 
+`analytics_query` takes **one** date range per call, so run it twice — once per period:
+
 ```
 mcp__search-console-mcp__analytics_query
   siteUrl: <site>
   dimensions: [query]
-  dateRanges: [{startDate: <period-start>, endDate: <period-end>},
-               {startDate: <prior-period-start>, endDate: <prior-period-end>}]
-  dataState: all
-  limit: 5000
+  startDate: <period-start>
+  endDate: <period-end>
+  engine: google
 ```
 
 Bucket queries into brand (containing the tenant's brand terms) and non-brand, sum
-clicks/impressions per bucket per period, and compare. `dataState: "all"` matters here —
-without it, the most recent days are silently excluded and read as a false drop.
+clicks/impressions per bucket per period, and compare.
+
+Two caveats, both documented in `docs/05-usage.md`:
+
+- **The freshest days are missing.** This tool hardcodes `dataState: "final"`, so the
+  last few days are excluded and can read as a false drop. Confirm any recent-looking
+  drop with `analytics_compare` (`mode: "drop_attribution"`), which does include fresh
+  data, before you believe it.
+- **You get 1000 rows.** An upstream bug drops `rowLimit`, so the cap is 1000 no matter
+  what you pass. For a large site the query long tail is truncated — read the brand vs
+  non-brand split as indicative, and lean on the page-level step below.
 
 **2. Drill to page level** for whichever bucket dropped:
 
@@ -49,9 +59,15 @@ without it, the most recent days are silently excluded and read as a false drop.
 mcp__search-console-mcp__analytics_query
   siteUrl: <site>
   dimensions: [page]
-  dateRanges: [<same two ranges as above>]
-  dimensionFilterGroups: [{filters: [{dimension: query, operator: contains|excludingRegex, expression: <brand terms>}]}]
+  startDate: <period-start>
+  endDate: <period-end>
+  engine: google
+  filters: [{dimension: query, operator: contains|excludingRegex, expression: <brand terms>}]
 ```
+
+Again once per period. `filters` is a flat array of `{dimension, operator, expression}`
+objects — the server wraps each one in its own `dimensionFilterGroups` entry, so multiple
+filters are joined by AND.
 
 This tells you whether the drop is sitewide (many pages down a little) or concentrated
 (a few pages down a lot) — different next steps for each.
