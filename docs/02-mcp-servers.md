@@ -19,7 +19,9 @@ config block below runs.
 
 ## search-console-mcp (GSC)
 
-- Package: `search-console-mcp` on npm, version **2.0.1**.
+- Package: [`search-console-mcp`](https://www.npmjs.com/package/search-console-mcp) on npm, version **2.0.1**.
+- Upstream repo: [saurabhsharma2u/search-console-mcp](https://github.com/saurabhsharma2u/search-console-mcp)
+  (docs: <https://searchconsolemcp.saurabh.app/>).
 - Run via `npx`, which downloads and caches it on first use — no separate install step:
 
 ```
