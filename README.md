@@ -11,6 +11,23 @@ This is a **blueprint to clone**, not a library to install. Fork or `git clone` 
 it yours, and keep your tenants' data in your own copy — nothing here talks to a shared
 backend.
 
+## Built on two upstream MCP servers
+
+This blueprint writes no MCP server of its own. All the GA4 and Search Console work is
+done by two existing open-source projects, and everything here — the setup script, the
+multi-tenant layout, the docs, the playbooks — is glue around them:
+
+- **GA4:** [googleanalytics/google-analytics-mcp](https://github.com/googleanalytics/google-analytics-mcp)
+  — [`analytics-mcp`](https://pypi.org/project/analytics-mcp/) on PyPI, pinned to 0.7.0.
+- **Search Console:** [saurabhsharma2u/search-console-mcp](https://github.com/saurabhsharma2u/search-console-mcp)
+  — [`search-console-mcp`](https://www.npmjs.com/package/search-console-mcp) on npm,
+  pinned to 2.1.1. Not to be confused with
+  [AminForou/mcp-gsc](https://github.com/AminForou/mcp-gsc), a separate Python server
+  covering the same ground under a similar name.
+
+Both versions are pinned deliberately; `docs/02-mcp-servers.md` explains why, and what
+upgrading them entails.
+
 ## What you need
 
 - A Google account with GA4 and Search Console access (Viewer is enough) to the sites you
