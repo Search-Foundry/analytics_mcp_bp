@@ -144,13 +144,13 @@ Remedies, in order:
    ```
 
    `setup.sh --print-mcp-config` and `doctor.sh` both honor `GSC_MCP_MODE=local` and will
-   launch/check the local build instead of `npx -y search-console-mcp@2.0.1`.
+   launch/check the local build instead of `npx -y search-console-mcp@2.1.1`.
 
 ### Historical note: `re2`
 
 Up through v1.14.x, `search-console-mcp` depended on `re2`, a native regex module with no
 prebuilds for Node 25 — installing or starting the server on Node 25 would crash outright.
-It was removed in v2 (see upstream PR #81, fixing issue #80). If you're on v2.0.1 as this
+It was removed in v2 (see upstream PR #81, fixing issue #80). If you're on v2.1.1 as this
 project specifies, `re2` is not a factor; `@napi-rs/keyring` is the only native-module risk
 left, and even that only affects the server's own internal credential-store access, not
 the ADC-based flow this blueprint uses by default.
