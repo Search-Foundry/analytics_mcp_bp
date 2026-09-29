@@ -19,13 +19,13 @@ config block below runs.
 
 ## search-console-mcp (GSC)
 
-- Package: [`search-console-mcp`](https://www.npmjs.com/package/search-console-mcp) on npm, version **2.1.1**.
+- Package: [`search-console-mcp`](https://www.npmjs.com/package/search-console-mcp) on npm, version **2.1.3**.
 - Upstream repo: [saurabhsharma2u/search-console-mcp](https://github.com/saurabhsharma2u/search-console-mcp)
   (docs: <https://searchconsolemcp.saurabh.app/>).
 - Run via `npx`, which downloads and caches it on first use — no separate install step:
 
 ```
-npx -y search-console-mcp@2.1.1
+npx -y search-console-mcp@2.1.3
 ```
 
 Version 2 dropped the native `re2` dependency that plagued earlier releases (see
@@ -41,7 +41,7 @@ Code itself, which is simpler to set up and doesn't require exposing a port.
 ## Versions are pinned on purpose
 
 Every install and run command in this repo names an exact version:
-`analytics-mcp==0.7.0` and `search-console-mcp@2.1.1`. That's deliberate, not an
+`analytics-mcp==0.7.0` and `search-console-mcp@2.1.3`. That's deliberate, not an
 oversight — `npx -y search-console-mcp` with no version would silently fetch whatever
 is newest at run time, and `search-console-mcp` went from 1.14.x to 2.0.0 as a breaking
 change: v2 replaced roughly 96 individual tools with 7 fluent domain tools, which is
@@ -79,7 +79,7 @@ This prints something like:
     "search-console-mcp": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "search-console-mcp@2.1.1"],
+      "args": ["-y", "search-console-mcp@2.1.3"],
       "env": { "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/application_default_credentials.json" }
     }
   }

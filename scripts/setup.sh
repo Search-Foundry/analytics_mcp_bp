@@ -103,7 +103,7 @@ print_mcp_config() {
     const [suffix, adc, gscMode, gscPath] = process.argv.slice(1);
     const gsc = gscMode === "local"
       ? { command: "node", args: [gscPath] }
-      : { command: "npx", args: ["-y", "search-console-mcp@2.1.1"] };
+      : { command: "npx", args: ["-y", "search-console-mcp@2.1.3"] };
     const config = {
       mcpServers: {
         ["analytics-mcp" + suffix]: {

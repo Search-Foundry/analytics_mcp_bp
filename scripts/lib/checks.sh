@@ -99,7 +99,7 @@ check_gsc_server() {
     if [ "$mode" = "local" ]; then
       GOOGLE_APPLICATION_CREDENTIALS="${ADC_FILE:-}" node "$GSC_MCP_PATH" >"$out_file" 2>&1 &
     else
-      GOOGLE_APPLICATION_CREDENTIALS="${ADC_FILE:-}" npx -y search-console-mcp@2.1.1 >"$out_file" 2>&1 &
+      GOOGLE_APPLICATION_CREDENTIALS="${ADC_FILE:-}" npx -y search-console-mcp@2.1.3 >"$out_file" 2>&1 &
     fi
     echo "$!" > "$pid_file"
     wait

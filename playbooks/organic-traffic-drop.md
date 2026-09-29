@@ -49,9 +49,8 @@ Two caveats, both documented in `docs/05-usage.md`:
   last few days are excluded and can read as a false drop. Confirm any recent-looking
   drop with `analytics_compare` (`mode: "drop_attribution"`), which does include fresh
   data, before you believe it.
-- **You get 1000 rows.** An upstream bug drops `rowLimit`, so the cap is 1000 no matter
-  what you pass. For a large site the query long tail is truncated — read the brand vs
-  non-brand split as indicative, and lean on the page-level step below.
+- **Ask for enough rows.** The default is 1000; pass `rowLimit` (up to 25,000) on a
+  large site, or the query long tail is truncated and the brand vs non-brand split skews.
 
 **2. Drill to page level** for whichever bucket dropped:
 

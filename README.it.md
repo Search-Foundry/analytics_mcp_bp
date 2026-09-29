@@ -22,7 +22,7 @@ a loro:
   — [`analytics-mcp`](https://pypi.org/project/analytics-mcp/) su PyPI, pinnato a 0.7.0.
 - **Search Console:** [saurabhsharma2u/search-console-mcp](https://github.com/saurabhsharma2u/search-console-mcp)
   — [`search-console-mcp`](https://www.npmjs.com/package/search-console-mcp) su npm,
-  pinnato a 2.1.1.
+  pinnato a 2.1.3.
 
 Le versioni sono pinnate di proposito: `docs/02-mcp-servers.md` spiega perché, e cosa
 comporta aggiornarle.
